@@ -21,7 +21,7 @@ fi
 
 echo "$HOST.$DOMAIN"
 
-OPTIONS="login_token=${TOKEN}";
+OPTIONS="format=xml&login_token=${TOKEN}";
 OUT=$(curl -s -k "https://dnsapi.cn/Domain.List" -d "${OPTIONS}");
 for line in $OUT;do
     if [ "$(echo "$line"|grep '<id>' -c)" != 0 ];then
@@ -67,7 +67,7 @@ else
     OUT=$(curl -k -s "https://dnsapi.cn/Record.Create" -d "${OPTIONS}&domain_id=${DOMAIN_ID}&sub_domain=${HOST}&record_line=${RECORD_LINE}&record_type=TXT&value=${TXT_TOKEN}")
 fi
 
-if [ "$(echo "$OUT"|grep 'successful' -c)" != 0 ];then
+if [ "$(echo "$OUT"|grep '<code>1<' -c)" != 0 ];then
     echo "DNS UPDATE SUCCESS"
 else
     echo "DNS UPDATE FAILED"
